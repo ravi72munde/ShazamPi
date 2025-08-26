@@ -1,6 +1,10 @@
 import datetime
 from service.model.SongInfo import SongInfo
 
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 class SongTracker:
     """
     Tracks currently identified song and decides whether re-identification is needed.
@@ -16,14 +20,14 @@ class SongTracker:
 
         # No previous song → identify
         if self.prev_title is None:
-            print("previous song was None so detecting")
+            logger.debug("previous song was None so detecting")
             return True
 
         if self.next_check_time is None or now >= self.next_check_time:
-            print("Reached the next trigger time".format(self.next_check_time))
+            logger.debug("Reached the next trigger time".format(self.next_check_time))
             return True
 
-        print(f"Waiting... will trigger in {(self.next_check_time - now).total_seconds():.2f} seconds")
+        logger.debug(f"Waiting... will trigger in {(self.next_check_time - now).total_seconds():.2f} seconds")
         return False
 
     def update(self, song_info: SongInfo):
