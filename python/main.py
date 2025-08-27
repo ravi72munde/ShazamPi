@@ -26,6 +26,7 @@ def music_detection_loop():
     recording_duration = 10
     seconds_delay_to_mark_no_song = 30
     last_music_detected_time = datetime.datetime.now() - datetime.timedelta(seconds=seconds_delay_to_mark_no_song)
+    notify_webhook(None)
     while True:
         raw_audio = audio_service.record_raw_audio(recording_duration)
 
@@ -42,10 +43,12 @@ def music_detection_loop():
                     logging.debug(f"Now playing: {asdict(song_info)}")
                     tracker.update(song_info)
         else:
-            tracker.prev_title = None  # reset if no music
             # only send no music notification if no music detected for more than 30 sec
             if( datetime.datetime.now()-last_music_detected_time).total_seconds() > seconds_delay_to_mark_no_song:
-                notify_webhook(None)
+                if tracker.prev_title:
+                    notify_webhook(None)
+                    tracker.prev_title = None  # reset if no music
+
             logging.debug("No music.")
 
 if __name__ == "__main__":
