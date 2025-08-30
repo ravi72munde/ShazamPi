@@ -45,8 +45,6 @@ fi
 echo
 echo
 echo "###### Creating default config entries and files"
-echo "; disable smaller album cover set to False" >> ${install_path}/config/options.ini
-echo "; if disabled top offset is still calculated like as the following:" >> ${install_path}/config/options.ini
 echo "shazampi_log = ${install_path}/log/shazampi.log" >> ${install_path}/config/options.ini
 echo "done creation default config  ${install_path}/config/options.ini"
 
