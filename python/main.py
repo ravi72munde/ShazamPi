@@ -13,14 +13,19 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-WEBHOOK_URL = "http://homeassistant.local:8123/api/webhook/-shazampi-trigger"
+WEBHOOK_URLS = [
+    "http://homeassistant.local:8123/api/webhook/-shazampi-trigger",
+    "http://localhost:8090/"
+]
 
 def notify_webhook(data):
-    try:
-        payload = {"data": asdict(data) if hasattr(data, "__dataclass_fields__") else data}
-        requests.post(WEBHOOK_URL, json=payload, timeout=5)
-    except requests.exceptions.RequestException as e:
-        logging.error(f"Failed to notify webhook: {e}")
+    payload = {"data": asdict(data) if hasattr(data, "__dataclass_fields__") else data}
+    for url in WEBHOOK_URLS:
+        try:
+            requests.post(url, json=payload, timeout=5)
+            logging.info(f"Sent webhook to {url}")
+        except requests.exceptions.RequestException as e:
+            logging.error(f"Failed to notify webhook at {url}: {e}")
 
 def music_detection_loop():
     recording_duration = 10
