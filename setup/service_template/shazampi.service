@@ -1,0 +1,16 @@
+[Unit]
+Description=Shazampi service
+After=syslog.target network.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+SyslogIdentifier=shazampi
+LimitRTPRIO=99
+Restart=on-failure
+RestartSec=1s
+KillSignal=SIGINT
+EnvironmentFile=/etc/systemd/system/shazampi.service.d/shazampi_env.conf
+
+[Install]
+WantedBy=multi-user.target

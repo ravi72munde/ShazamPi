@@ -1,2 +1,2 @@
 # ShazamPi
-Continous running server to detect and identify music, running on Raspberry pi zero 
+Continuous running server to detect and identify music, running on Raspberry pi zero 
